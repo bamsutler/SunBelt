@@ -1,0 +1,6 @@
+[UserName]
+butlerst
+[PASSWORD]
+cs455
+[Target Database]
+jdbc:mysql://cs.ulm.edu/butlert3
