@@ -24,9 +24,9 @@ public class SunBeltController {
 	
 	MainApp prog = new MainApp();
 	
-	/*
-	 * Fields to controll the Tables
-	 */
+	
+	 // Fields to control the Table  on the Display
+	 
 	@FXML
     private TableView<Game> Table;
 	@FXML
@@ -51,9 +51,8 @@ public class SunBeltController {
 	private TextField recordText;
 	
 	
-	/**
-	 * Fields to add a Game
-	 */
+	
+	// Field variables for the add game Function
 	@FXML
 	private TextField idate;
 	@FXML
@@ -72,19 +71,25 @@ public class SunBeltController {
 	private Label actionMessage;
 	
 	
-	/**
-	 * Feilds for the menu Bar Items
-	 */
+	
+	// Field variables that control the Menu Actions
+	 
 	@FXML
 	private MenuItem close;
 	
 	@FXML
-	private MenuItem about;
+	private MenuItem about; //TODO an about page.
 	
-	//Popup Menu controller
+	//Table Popup Menu controller
 	@FXML
 	private MenuItem removeGame;
     
+	
+	
+	/**
+	 * This is the Main Constructor for the Sunbelt Controller. When invoked it
+	 * Initializeses the Game Table and Team List. XXX you were here
+	 */
     public SunBeltController(){
     	
     }

@@ -1,5 +1,3 @@
-//TODO DOCUMENT THIS SHIT
-
 package sunBelt;
 
 import java.sql.ResultSet;
@@ -25,31 +23,24 @@ public class MainApp extends Application {
 		launch(args);
 
 	}
-																					private ObservableList<Game> gameData = FXCollections.observableArrayList(); // Master
-																					// List
-																					// for
-																					// Game
-																					// Objects
-	private ObservableList<Team> teamData = FXCollections.observableArrayList(); // list
-									// of
-																					// teams
-																					// and
-																					// associated
-																					// data
+
+	// Master List for Game Objects
+	private ObservableList<Game> gameData = FXCollections.observableArrayList();
+	// list of teams and associated data
+	private ObservableList<Team> teamData = FXCollections.observableArrayList();
+	// The List of Game Objects that will be actualy displayed
 	private ObservableList<Game> displayGames = FXCollections
-			.observableArrayList(); // The List of Game Objects that will be
-									// actualy displayed
+			.observableArrayList();
+	// list of team names to populate the left hand selector window
 	protected ObservableList<String> teams = FXCollections
-			.observableArrayList(); // list of team names to populate the left
-	// hand selecter window
+			.observableArrayList();
+	// list of Short Team Name to Populate The Combo Box Drop Down Menus.
 	protected ObservableList<String> sTeams = FXCollections
 			.observableArrayList();
-											private final String all = "All Teams"; // constant for selection and output
-	// on the selection list
-	protected String currentTeam = all; // current selected team
-
-	// static Map<String,String> nameIDmap = new HashMap<String, String>(); no
-	// longer used
+	// constant for selection and output on the selection list
+	private final String all = "All Teams";
+	// current selected team
+	protected String currentTeam = all;
 
 	private DataMan dataManager;
 
@@ -278,7 +269,7 @@ public class MainApp extends Application {
 
 		try {
 			Date newDate = df.parse(date);
-			System.err.println("yay"+newDate+"worked");
+			System.err.println("yay" + newDate + "worked");
 			if (!teams.contains(hTeam.toUpperCase())
 					&& !sTeams.contains(hTeam.toUpperCase())) {
 				valid = false;

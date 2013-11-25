@@ -1,5 +1,10 @@
-
-//TODO DOCUMENT THIS SHIT!!!!
+/**
+ * DataMan is the class used to build a DataManager object for the SunBelt Program. It manages connections and query to the database.
+ * 
+ * 
+ * @author Samuel Butler
+ * 
+ */
 
 package sunBelt;
 
@@ -19,6 +24,20 @@ public class DataMan {
 	String user;
 	String password;
 
+	/**
+	 * Main Constructor for the Class. Used in combination with a configuration
+	 * file to access the database.
+	 * 
+	 * @param fileName
+	 *            An Input stream from a configuration file containing the
+	 *            username and password for the database. In the format Blank
+	 *            Line \n Username \n BlankLine \n Password
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public DataMan(String fileName) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException, SQLException,
 			IOException {
@@ -41,26 +60,50 @@ public class DataMan {
 
 	}
 
+	/**
+	 * 
+	 * Alterante Constructer used for the database in case a configuration file
+	 * will not work.
+	 * 
+	 * @param user
+	 *            A String That is the username for the database.
+	 * @param pass
+	 *            A String that is the password for the database.
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public DataMan(String user, String pass) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException, SQLException,
 			IOException {
 		// get username and password
-
-		/**
-		 * BufferedReader br = new BufferedReader(new FileReader(fileName));
-		 * br.readLine(); user = br.readLine(); br.readLine(); password =
-		 * br.readLine(); br.readLine(); dbName = br.readLine(); br.close();
-		 */
 		this.user = user;
 		this.password = pass;
 
 		connectData();
 	}
 
+	/**
+	 * 
+	 * Method to close connection to the database.
+	 * 
+	 * @throws SQLException
+	 */
 	public void closeData() throws SQLException {
 		con.close();
 	}
 
+	/**
+	 * 
+	 * Method to establish connection to the database.
+	 * 
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public void connectData() throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException, SQLException {
 		// Define database drive
@@ -70,6 +113,18 @@ public class DataMan {
 		con = DriverManager.getConnection(dbName, user, password);
 	}
 
+	/**
+	 * 
+	 * Method to Delete data from the database.
+	 * 
+	 * @param id
+	 *            The Integer ID number of the game to be removed from the
+	 *            database.
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public void delete(Integer id) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException, SQLException {
 		Statement stmt;
@@ -82,6 +137,16 @@ public class DataMan {
 		stmt.executeUpdate(query);
 	}
 
+	/**
+	 * 
+	 * Method to Retrieve data from the database.
+	 * 
+	 * @param tablename
+	 *            The Name of the Table within the database the has the data
+	 *            being requested.
+	 * @return A ResultSet of the data requested
+	 * @throws SQLException
+	 */
 	public ResultSet getData(String tablename) throws SQLException {
 
 		ResultSet result = null;
@@ -97,6 +162,26 @@ public class DataMan {
 		return result;
 	}
 
+	/**
+	 * 
+	 * Method to insert Game Data into the Database. The Data Should be
+	 * Validated before sending to this method.
+	 * 
+	 * @param date
+	 *            A String representation of the date of the game object.
+	 * @param hTeam
+	 *            A String representation of the Team ID for the Home Team.
+	 * @param vTeam
+	 *            A String representation of the Team ID for the Visiting Team.
+	 * @param hScore
+	 *            A String representation of the Score for the Home team.
+	 * @param vScore
+	 *            A String representation of the Score for the Visiting team.
+	 * @throws SQLException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
 	public void insert(String date, String hTeam, String vTeam, String hScore,
 			String vScore) throws SQLException, InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
@@ -106,8 +191,6 @@ public class DataMan {
 		if (con.isClosed()) {
 			connectData();
 		}
-		// TODO Compleate Insert statement This should receave fields from a
-		// game object.
 		stmt = con.createStatement();
 		query = "INSERT INTO GAME (day, hteam, vteam, hscore, vscore) VALUES (\'"
 				+ date
