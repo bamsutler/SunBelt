@@ -1,3 +1,13 @@
+/**
+ * Ths is the main Application file for the SunBelt project. most if not all of the Processing along with The main
+ * method Are located in this file. 
+ *      This Project was written for Dr. Smith's 4055 Theory of Database Management Class at ULM.
+ *      Fall 2013 
+ * 
+ * @author Samuel Butler
+ * 
+ */ 
+
 package sunBelt;
 
 import java.sql.ResultSet;
@@ -18,7 +28,13 @@ import sunBelt.model.Game;
 import sunBelt.model.Team;
 
 public class MainApp extends Application {
-
+        
+        /**
+         * Main method calls the launch method that launches that stand alone JavaFX application.
+         * 
+         * @param an Array for Strings that are the command line arguments. These do not effect the outcome of this 
+         * program. 
+         */
 	public static void main(String[] args) {
 		launch(args);
 
@@ -41,19 +57,19 @@ public class MainApp extends Application {
 	private final String all = "All Teams";
 	// current selected team
 	protected String currentTeam = all;
-
+        //callign the constructor for the database management class that was written for this project. 
 	private DataMan dataManager;
 
 	/**
-	 * constructor
-	 * 
+	 * The constructor for this class is called by the controll document for the GUI. This alows the controller to 
+	 * call the methods for processing uesr input to the gui. When called This method Connects to the database and  
+	 * submits querys to gain the information from the database that is used to populate the arraylists in this
+	 * Class. 
 	 */
 	public MainApp() {
 
-		// for some reason when i try to use the config.txt file the system
-		// cannot find it. so i made 2 constructors for DataMan.
-		try {
 
+		try {
 			// Connect to the DataBase
 			dataManager = new DataMan("config.txt");
 			ResultSet set;
@@ -68,24 +84,31 @@ public class MainApp extends Application {
 			// Construct Master GameData List
 			populateMasterGameList(set);
 			updateDisplayGamesList();
-
-			// buildNameIDMap(); i don't think i will need this anymore. removed
-			// with the addition of gameHName and gameVName in Game class
-
 		} catch (Exception e) {
 			System.err.print(e);
 		}
 
 	}
-
+        
+        /**
+         * fixGameNames Iterates threw both the Team list and The Master Game list. It pulls the Team ID from the Team 
+         * object it is currently on and begains an iteration of Game objects checking the IDs of the teams from that 
+         * game. When a match is found The apropreate Name Variable from that game object is set to the Name of the Team
+         * object currently being iterated over. 
+         * 
+         */
 	private void fixGameNames() {
 
+                //iterate the team list
 		for (Team team : teamData) {
+		        //retreave the ID of the team currently being iterated on
 			String teamID = team.getTeamID();
+			//begain iteration over the game objects
 			for (Game game : gameData) {
 				String visit = game.getGameVTeamID();
 				String home = game.getGameHTeamID();
-
+                                //if the home team of visiting team ids for the curent game match the id for the current
+                                // team set the apropreate name variable to the name of the Team. 
 				if (home.equals(teamID)) {
 					game.setGameHName(team.getTeamName());
 				}
@@ -96,12 +119,22 @@ public class MainApp extends Application {
 		}
 
 	}
-
+        /**
+        *
+        *returns the value of the Currently Selected Team from the List View. This is the filter for showing only one 
+        * teams games at a time. 
+        * 
+        * @return String the current team representing the currently selected team filter. Initiates to "all"
+        */
+        
 	public String getCurrentTeam() {
 		return currentTeam;
 	}
 
 	/**
+	 * getDisplayGames is a method to retrive the ArrayList of Game objects in the ObservableArrayList displayGames.
+	 * the Objects in this list are used to populate the Table on the interface. 
+	 * 
 	 * @return the displayGames list of Game Objects
 	 */
 	public ObservableList<Game> getDisplayGames() {
@@ -109,6 +142,10 @@ public class MainApp extends Application {
 	}
 
 	/**
+	 * getGameData is a method to retrive the ArrayList of Game objects in the ObservableArrayList gameData.
+	 * The Objects in this list are used as a basis to form the displayGame List. By doing this we can modify 
+	 * The displayGame list without trying to iterate and change a list at the same time. 
+	 * 
 	 * @return the gameData list of Game Objects
 	 */
 	public ObservableList<Game> getGameData() {
@@ -117,12 +154,20 @@ public class MainApp extends Application {
 	}
 
 	/**
+	 *  getTeamData is a method to retrive the ArrayList of Team objects in the ObservableArrayList teamData.
 	 * @return the teamData list of Team Objects
 	 */
 	public ObservableList<Team> getTeamData() {
 		return teamData;
 	}
-
+        
+        /**
+         * 
+         * 
+         * 
+         * @param
+         * @return 
+         */
 	public String getTeamID(String teamName) {
 		String temp = null;
 		for (Team team : teamData) {
