@@ -1,5 +1,5 @@
 /**
- * Ths is the main Application file for the SunBelt project. most if not all of the Processing along with The main
+ * This is the main Application file for the SunBelt project. most if not all of the Processing along with The main
  * method Are located in this file. 
  *      This Project was written for Dr. Smith's 4055 Theory of Database Management Class at ULM.
  *      Fall 2013 
@@ -57,11 +57,11 @@ public class MainApp extends Application {
 	private final String all = "All Teams";
 	// current selected team
 	protected String currentTeam = all;
-        //callign the constructor for the database management class that was written for this project. 
+        //Calling the constructor for the database management class that was written for this project. 
 	private DataMan dataManager;
 
 	/**
-	 * The constructor for this class is called by the controll document for the GUI. This alows the controller to 
+	 * The constructor for this class is called by the control document for the GUI. This alows the controller to 
 	 * call the methods for processing uesr input to the gui. When called This method Connects to the database and  
 	 * submits querys to gain the information from the database that is used to populate the arraylists in this
 	 * Class. 
@@ -92,8 +92,8 @@ public class MainApp extends Application {
         
         /**
          * fixGameNames Iterates threw both the Team list and The Master Game list. It pulls the Team ID from the Team 
-         * object it is currently on and begains an iteration of Game objects checking the IDs of the teams from that 
-         * game. When a match is found The apropreate Name Variable from that game object is set to the Name of the Team
+         * object it is currently on and begins an iteration of Game objects checking the IDs of the teams from that 
+         * game. When a match is found The appropriate Name Variable from that game object is set to the Name of the Team
          * object currently being iterated over. 
          * 
          */
@@ -101,14 +101,14 @@ public class MainApp extends Application {
 
                 //iterate the team list
 		for (Team team : teamData) {
-		        //retreave the ID of the team currently being iterated on
+		        //Retrieve the ID of the team currently being iterated on
 			String teamID = team.getTeamID();
-			//begain iteration over the game objects
+			//Begin iteration over the game objects
 			for (Game game : gameData) {
 				String visit = game.getGameVTeamID();
 				String home = game.getGameHTeamID();
-                                //if the home team of visiting team ids for the curent game match the id for the current
-                                // team set the apropreate name variable to the name of the Team. 
+                                //if the home team of visiting team id's for the current game match the id for the current
+                                // team set the appropriate name variable to the name of the Team. 
 				if (home.equals(teamID)) {
 					game.setGameHName(team.getTeamName());
 				}
@@ -132,7 +132,7 @@ public class MainApp extends Application {
 	}
 
 	/**
-	 * getDisplayGames is a method to retrive the ArrayList of Game objects in the ObservableArrayList displayGames.
+	 * getDisplayGames is a method to retrieve the ArrayList of Game objects in the ObservableArrayList displayGames.
 	 * the Objects in this list are used to populate the Table on the interface. 
 	 * 
 	 * @return the displayGames list of Game Objects
@@ -142,7 +142,7 @@ public class MainApp extends Application {
 	}
 
 	/**
-	 * getGameData is a method to retrive the ArrayList of Game objects in the ObservableArrayList gameData.
+	 * getGameData is a method to retrieve the ArrayList of Game objects in the ObservableArrayList gameData.
 	 * The Objects in this list are used as a basis to form the displayGame List. By doing this we can modify 
 	 * The displayGame list without trying to iterate and change a list at the same time. 
 	 * 
@@ -154,7 +154,8 @@ public class MainApp extends Application {
 	}
 
 	/**
-	 *  getTeamData is a method to retrive the ArrayList of Team objects in the ObservableArrayList teamData.
+	 *  getTeamData is a method to retrieve the ArrayList of Team objects in the ObservableArrayList teamData.
+	 *  
 	 * @return the teamData list of Team Objects
 	 */
 	public ObservableList<Team> getTeamData() {
@@ -162,11 +163,12 @@ public class MainApp extends Application {
 	}
         
         /**
+         *	Translates Team names or short team names to their corresponding id numbers by iterating threw the Team 
+         * List and returning the team id of the requested team. Returns the all constant if their are no matches to a
+         * team name.
          * 
-         * 
-         * 
-         * @param
-         * @return 
+         * @param teamName String containing the name or short name of the a team.
+         * @return a String containing the ID number of the requested team.
          */
 	public String getTeamID(String teamName) {
 		String temp = null;
@@ -183,20 +185,31 @@ public class MainApp extends Application {
 		return temp;
 	}
 
+		/**
+		 * 
+		 * Insert data calls on the data Manager to Insert Game object information into the GAME table in our Database. 
+		 * after insertion the new database table is requested and the ResultSet is used to repopulate the master game list. 
+		 * Then the displayGame list objects are updated with the new data. 
+		 * 
+		 * @param g a Game object to have its values inserted into the DataBase. 
+		 */
 	public void insertData(Game g) {
-		// calls insert from DataMan and insert the vaules from Sunbelt
-		// Controller. calls Populate master List when finsihed to refresh
+		// calls insert from DataMan and insert the values from Sunbelt
+		// Controller. calls Populate master List when finished to refresh
 		// tableView
 		// and updateDislayGame list to update the display
 		String hScore = String.valueOf(g.getGameHScore());
 		String vScore = String.valueOf(g.getGameVScore());
 
 		try {
-
+			//call to dataMan insert method passing the variables from the Game object
 			dataManager.insert(g.getGameDate(), g.getGameHTeamID(),
 					g.getGameVTeamID(), hScore, vScore);
+			//Request The New GAME table information
 			ResultSet set = dataManager.getData("GAME");
+			// Repopulate the Master Game list.
 			this.populateMasterGameList(set);
+			
 		} catch (InstantiationException | IllegalAccessException
 				| ClassNotFoundException | SQLException e) {
 			System.err.println("ERROR-Failed to Insert or ");
@@ -205,7 +218,14 @@ public class MainApp extends Application {
 		this.updateDisplayGamesList();
 
 	}
-
+	
+	/**
+	 * Method to iterate threw a ResultSet and build Game objects while applying them to the gameData Observable List
+	 * After building the gameData List fixGameNames is called to insert appropriate Team Names into the objects.  
+	 * 
+	 * @param set The ResultSet to be iterated over. 
+	 * @throws SQLException
+	 */
 	public void populateMasterGameList(ResultSet set) throws SQLException {
 		gameData.clear();
 		while (set.next()) {
@@ -217,6 +237,13 @@ public class MainApp extends Application {
 		fixGameNames();
 	}
 
+	/**
+	 *  Method to iterate threw a ResultSet and build Team objects while applying them to the teamData Observable List and
+	 *  short names from the ResultSet to the sTeams list. Begins by erasing any current Data in the teams and sTeams lists.  
+	 * 
+	 * @param set ResultSet to be iterated over.
+	 * @throws SQLException
+	 */
 	public void populateMasterTeamList(ResultSet set) throws SQLException {
 
 		teams.clear();
@@ -236,6 +263,10 @@ public class MainApp extends Application {
 
 	}
 
+	/**
+	 * 
+	 * @param game
+	 */
 	public void removeGame(Game game) {
 		// calls delete from DataMan and deletes the vaules sent from Sunbelt
 		// Controller. calls Populate master List when finsihed to refresh
@@ -286,7 +317,7 @@ public class MainApp extends Application {
 	public void updateDisplayGamesList() {
 		// empty display list
 		displayGames.clear();
-		// if all is selected diplay entire list of games copied from the master
+		// if all is selected display entire list of games copied from the master
 		// list
 		if (currentTeam.equals(all)) {
 			displayGames.addAll(gameData);
@@ -304,7 +335,7 @@ public class MainApp extends Application {
 
 	// TODO Method to calculate Wins For Teams on Update of Master Game List.
 
-	// Validates Table Input so no sneaky teacher surprises can hinder my good
+	// Validates Table Input so no sneaky teacher surprises cant hinder my good
 	// grade.
 	public Boolean vailidateInput(String date, String hTeam, String vTeam,
 			String hScore, String vScore) {
