@@ -1,6 +1,9 @@
-
-// TODO DOCUMENT THIS SHIT
-
+/**
+ * This is the controller class for the GUI in the SunBelt Controller project. 
+ * This file Maintains the functionality of the Gui while useing the MainApp file 
+ * for processing. 
+ * 
+ */
 package sunBelt;
 
 
@@ -21,7 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import sunBelt.model.Game;
 
 public class SunBeltController {
-	
+	// Creating an instance of the MainApp to access its methods.
 	MainApp prog = new MainApp();
 	
 	
@@ -66,9 +69,8 @@ public class SunBeltController {
 	@FXML
 	private Button submitBTN;
 	
-	// Output Line for errors in input TODO needs to be enabled
 	@FXML
-	private Label actionMessage;
+	private Label CurrentTeam;
 	
 	
 	
@@ -78,29 +80,39 @@ public class SunBeltController {
 	private MenuItem close;
 	
 	@FXML
-	private MenuItem about; //TODO an about page.
+	private MenuItem help; 
 	
 	//Table Popup Menu controller
 	@FXML
 	private MenuItem removeGame;
+	
     
 	
 	
 	/**
 	 * This is the Main Constructor for the Sunbelt Controller. When invoked it
-	 * Initializeses the Game Table and Team List. XXX you were here
+	 * Initializeses the Game Table and Team List. Along with the Help Dialog and 
+	 * All the Event Listeners for the GUI.
 	 */
     public SunBeltController(){
     	
     }
     
+    /**
+     * 
+     */
     public void displayContext(){
     	 
      }
     
     
     
-    
+    /**
+     * Initialize is called when the constructor is called for the object. 
+     * it initializes the Displays and event Listeners. and Describes the actions to take on 
+     * events.
+     * 
+     */
     @FXML
     private void initialize() {
     	//initiate the team list on the left side selecting all teams to be Selected
@@ -125,6 +137,12 @@ public class SunBeltController {
         	public void changed(ObservableValue<? extends String> observable, 
         			String oldTeam, String newTeam){
         		prog.setCurrentTeam(prog.getTeamID(newTeam));
+        		prog.findRecord();
+        		if(!(prog.getTeamID(newTeam)=="All Teams")){
+        			recordText.setText( ""+ prog.getCurrentTeamWins() + " / " +prog.getCurrentTeamLosses());
+        			}else {
+        				recordText.setText("N/A");
+        			}
         		prog.updateDisplayGamesList();
         	}
         	});
@@ -134,7 +152,7 @@ public class SunBeltController {
             	
                 if(prog.vailidateInput(idate.getText(),iHome.getValue(),iVisiting.getValue(),iHomeScore.getText(),iVisitingScore.getText())){
                 	Game g = new Game(idate.getText(),prog.getTeamID(iHome.getValue()),prog.getTeamID(iVisiting.getValue()),iHomeScore.getText(),iVisitingScore.getText());
-                	System.err.println(g.toString());
+                	//System.err.println(g.toString());
                 	prog.insertData(g);
                 }else{
                 	System.err.println("Validation FAIL");
@@ -154,9 +172,13 @@ public class SunBeltController {
         		System.exit(0);
         	}
         });
-        }
-        //TODO Need a listener for Table Row Selection?(that would be nice) and maybe a right click remove?(even nicer)
-        //
+        //when help-about is clicked call MainApp.about() to display the dialog box
+        help.setOnAction(new EventHandler<ActionEvent>(){
+        	public void handle(ActionEvent t){
+        		prog.about();
+        	}
+        });
+    }
      
      /**
      * Is called by the main application to give a reference back to itself.

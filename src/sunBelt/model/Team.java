@@ -4,7 +4,11 @@
 package sunBelt.model;
 
 /**
- * @author Sam Butler TODO Document this shit
+ * Team class of the SunBelt Project. This class holds the names, shortnames, and other information
+ * about the teams in the database. This data is used to build display information and 
+ * translate ID numebrs into names and names into ID numbers. 
+ * 
+ * @author Sam Butler 
  */
 public class Team {
 
@@ -14,7 +18,14 @@ public class Team {
 	private String teamMascot;
 	private int wins;
 	private int losses;
-
+	/**
+	 * Constructor for the Team object. all inputs are Strings. 
+	 * 
+	 * @param id string representing the ID of the team
+	 * @param abbreviation String of the short name of the team
+	 * @param name the String that is the full name of the team
+	 * @param mascot  String that holds what the mascot of the team is called.
+	 */
 	public Team(String id, String abbreviation, String name, String mascot) {
 		// Constructor for the Team object
 		teamID = id;
@@ -22,6 +33,16 @@ public class Team {
 		teamName = name;
 		teamMascot = mascot;
 
+	}
+	
+	public String getRecord(){
+		return  "" + this.getWins()+" / "+this.getLosses()+"";
+	}
+	/**
+	 * empty constructor for Team object
+	 */
+	public Team() {
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
